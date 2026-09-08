@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MeetingBookingSystem.API/MeetingBookingSystem.API.csproj" Id="615f8e43-9b10-4573-a2a6-5697bf5d689f" />
+  </Folder>
+  <Folder Name="/tests/" />
+</Solution>
