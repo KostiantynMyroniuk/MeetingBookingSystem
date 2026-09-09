@@ -4,7 +4,8 @@ The core focus of this system is to handle simultaneous booking requests reliabl
 
 ## Technology Stack
 - **Backend:** .NET 10, ASP.NET Core (C#)
-- **Database:** Azure SQL Database via Entity Framework Core (EF Core)
+- **Architecture** CQRS, Mediatr, Minimal Apis
+- **Database:** Azure SQL Database, Entity Framework Core
 - **Real-time:** Azure SignalR Service
 - **Testing:** xUnit
 
@@ -12,7 +13,7 @@ The core focus of this system is to handle simultaneous booking requests reliabl
 
 ### 1. Concurrency Control
 - **Strict Requirement:** Never use a naive "check if free, then insert" approach. 
-- **Implementation Strategy:** Use an explicit concurrency control mechanism. The recommended approach is **Optimistic Concurrency** via EF Core.
+- **Implementation Strategy:** Use an explicit concurrency control mechanism.
   - Add a `[Timestamp]` / `RowVersion` column to the target entities.
   - Catch `DbUpdateConcurrencyException`.
   - On conflict, return a clean `409 Conflict` HTTP response with a clear message. Do NOT return a `500 Server Error` and never silently overwrite existing bookings.

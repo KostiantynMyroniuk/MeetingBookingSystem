@@ -13,7 +13,7 @@ namespace MeetingBookingSystem.API.Apis
     {
         public static void MapTimeSlotsApi(this IEndpointRouteBuilder app)
         {
-            var timeSlotsGroup = app.MapGroup("/api/{meetingRoom:guid}/slots")
+            var timeSlotsGroup = app.MapGroup("/api/rooms/{meetingRoomId:guid}/slots")
                 .WithTags("TimeSlots");
 
             timeSlotsGroup.MapGet("/", GetTimeSlots)

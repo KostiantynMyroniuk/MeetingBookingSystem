@@ -17,7 +17,6 @@ namespace MeetingBookingSystem.API.Features.MeetingRooms.UpdateMeetingRoom
         public async Task<Result<MeetingRoomDto>> Handle(UpdateMeetingRoomCommand request, CancellationToken cancellationToken)
         {
             var meetingRoom = await context.MeetingRooms
-                .AsNoTracking()
                 .FirstOrDefaultAsync(r => r.Id == request.MeetingRoomId, cancellationToken);
 
             if (meetingRoom == null)

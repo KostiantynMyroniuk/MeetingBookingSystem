@@ -12,6 +12,7 @@ public class MeetingRoomTimeSlot
     public DateTime StartAt { get; private set; }
     public DateTime EndAt { get; private set; }
 
+    public bool IsBooked { get; private set; } = false;
     public Booking? Booking { get; private set; }
 
     public byte[] RowVersion { get; private set; } = Array.Empty<byte>();
@@ -45,6 +46,7 @@ public class MeetingRoomTimeSlot
             throw new InvalidOperationException("The time slot is already booked.");
         }
 
+        IsBooked = true;
         var booking = new Booking(Id, bookedByUserId, DateTime.UtcNow);
         Booking = booking;
 

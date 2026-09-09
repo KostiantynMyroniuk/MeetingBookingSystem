@@ -17,7 +17,9 @@ namespace MeetingBookingSystem.API.Features.MeetingRoomTimeSlots.GetTimeSlots
         public async Task<Result<PaginatedList<TimeSlotDto>>> Handle(GetTimeSlotsQuery request, CancellationToken cancellationToken)
         {
             var query = context.MeetingRoomTimeSlots.AsNoTracking();
-            var totalCount = await query.CountAsync(cancellationToken);
+            var totalCount = await query
+                .Where(s => s.MeetingRoomId == request.MeetingRoomId)
+                .CountAsync(cancellationToken);
 
             var slots = await query
                 .Where(s => s.MeetingRoomId == request.MeetingRoomId)
@@ -28,7 +30,7 @@ namespace MeetingBookingSystem.API.Features.MeetingRoomTimeSlots.GetTimeSlots
                     s.MeetingRoomId,
                     s.StartAt,
                     s.EndAt,
-                    s.Booking != null))
+                    s.IsBooked))
                 .ToListAsync(cancellationToken);
 
             return Result<PaginatedList<TimeSlotDto>>.Success(new PaginatedList<TimeSlotDto>(slots, request.PageNumber, request.PageSize, totalCount));
