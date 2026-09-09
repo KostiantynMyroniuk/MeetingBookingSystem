@@ -13,7 +13,7 @@ namespace MeetingBookingSystem.API.Apis
     {
         public static void MapTimeSlotsApi(this IEndpointRouteBuilder app)
         {
-            var timeSlotsGroup = app.MapGroup("/api/slots")
+            var timeSlotsGroup = app.MapGroup("/api/{meetingRoom:guid}/slots")
                 .WithTags("TimeSlots");
 
             timeSlotsGroup.MapGet("/", GetTimeSlots)
@@ -22,12 +22,13 @@ namespace MeetingBookingSystem.API.Apis
         }
 
         public static async Task<Ok<PaginatedList<TimeSlotDto>>> GetTimeSlots(
+            Guid meetingRoomId,
             ISender sender,
             CancellationToken ct,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
-            var result = await sender.Send(new GetTimeSlotsQuery(pageNumber, pageSize), ct);
+            var result = await sender.Send(new GetTimeSlotsQuery(meetingRoomId, pageNumber, pageSize), ct);
 
             return TypedResults.Ok(result.Value);
         }

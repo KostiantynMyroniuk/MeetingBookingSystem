@@ -42,22 +42,4 @@ public static class Extensions
 
         builder.Services.AddHttpContextAccessor();
     }
-
-    private static void RegisterHandlers(IHostApplicationBuilder builder)
-    {
-        var assembly = typeof(Extensions).Assembly;
-        var handlerTypes = assembly.GetTypes()
-            .Where(type => type is { IsAbstract: false, IsInterface: false } && type.Name.EndsWith("Handler"));
-
-        foreach (var handlerType in handlerTypes)
-        {
-            var serviceType = handlerType.GetInterfaces().FirstOrDefault(interfaceType => interfaceType.Name == $"I{handlerType.Name}");
-            if (serviceType is null)
-            {
-                continue;
-            }
-
-            builder.Services.AddScoped(serviceType, handlerType);
-        }
-    }
 }

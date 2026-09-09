@@ -25,6 +25,7 @@ await app.SeedRolesAsync();
 app.MapIdentityApi<ApplicationUser>();
 app.MapMeetingRoomsApi();
 app.MapTimeSlotsApi();
+app.MapBookingApi();
 
 app.Run();
 

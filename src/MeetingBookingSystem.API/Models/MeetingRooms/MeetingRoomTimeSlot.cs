@@ -38,14 +38,14 @@ public class MeetingRoomTimeSlot
         EndAt = endAt;
     }
 
-    public Booking Book(string bookedByUserId, DateTime bookedAtUtc)
+    public Booking Book(string bookedByUserId)
     {
         if (Booking is not null)
         {
             throw new InvalidOperationException("The time slot is already booked.");
         }
 
-        var booking = new Booking(Id, bookedByUserId, bookedAtUtc);
+        var booking = new Booking(Id, bookedByUserId, DateTime.UtcNow);
         Booking = booking;
 
         return booking;

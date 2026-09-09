@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MeetingBookingSystem.API.Features.MeetingRoomTimeSlots.GetTimeSlots
 {
     public record GetTimeSlotsQuery(
+        Guid MeetingRoomId,
         int PageNumber = 1,
         int PageSize = 10) : IRequest<Result<PaginatedList<TimeSlotDto>>>;
 
@@ -19,6 +20,7 @@ namespace MeetingBookingSystem.API.Features.MeetingRoomTimeSlots.GetTimeSlots
             var totalCount = await query.CountAsync(cancellationToken);
 
             var slots = await query
+                .Where(s => s.MeetingRoomId == request.MeetingRoomId)
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(s => new TimeSlotDto(
