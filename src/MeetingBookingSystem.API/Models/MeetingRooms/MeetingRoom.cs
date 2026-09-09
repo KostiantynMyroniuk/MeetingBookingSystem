@@ -22,6 +22,11 @@ public class MeetingRoom
         UpdateDescription(description);
     }
 
+    public static MeetingRoom Create(string name, string? description)
+    {
+        return new MeetingRoom(name, description);
+    }
+
     public void Rename(string name)
     {
         if (string.IsNullOrWhiteSpace(name))

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MeetingBookingSystem.API.Extensions;
 
-public static class WebApplicationExtensions
+public static class WebAppExtensions
 {
     public static async Task SeedRolesAsync(this WebApplication app)
     {

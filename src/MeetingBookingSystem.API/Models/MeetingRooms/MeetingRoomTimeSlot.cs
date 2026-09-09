@@ -1,5 +1,4 @@
 using MeetingBookingSystem.API.Models.Bookings;
-using System.ComponentModel.DataAnnotations;
 
 namespace MeetingBookingSystem.API.Models.MeetingRooms;
 
@@ -15,7 +14,6 @@ public class MeetingRoomTimeSlot
 
     public Booking? Booking { get; private set; }
 
-    [Timestamp]
     public byte[] RowVersion { get; private set; } = Array.Empty<byte>();
 
     private MeetingRoomTimeSlot()

@@ -15,6 +15,9 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
         builder.Property(x => x.BookedAtUtc)
             .IsRequired();
 
+        builder.HasIndex(x => x.MeetingRoomTimeSlotId)
+            .IsUnique();
+
         builder.HasOne(x => x.BookedByUser)
             .WithMany()
             .HasForeignKey(x => x.BookedByUserId)
