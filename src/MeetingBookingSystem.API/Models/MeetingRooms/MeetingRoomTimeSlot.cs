@@ -5,18 +5,51 @@ namespace MeetingBookingSystem.API.Models.MeetingRooms;
 
 public class MeetingRoomTimeSlot
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
-    public Guid MeetingRoomId { get; set; }
+    public Guid MeetingRoomId { get; private set; }
+    public MeetingRoom MeetingRoom { get; private set; } = default!;
 
-    public MeetingRoom MeetingRoom { get; set; } = null!;
+    public DateTime StartAt { get; private set; }
+    public DateTime EndAt { get; private set; }
 
-    public DateTime StartAt { get; set; }
-
-    public DateTime EndAt { get; set; }
-
-    public Booking? Booking { get; set; }
+    public Booking? Booking { get; private set; }
 
     [Timestamp]
-    public byte[] RowVersion { get; set; } = Array.Empty<byte>();
+    public byte[] RowVersion { get; private set; } = Array.Empty<byte>();
+
+    private MeetingRoomTimeSlot()
+    {
+    }
+
+    public MeetingRoomTimeSlot(Guid meetingRoomId, DateTime startAt, DateTime endAt)
+    {
+        Id = Guid.CreateVersion7();
+        MeetingRoomId = meetingRoomId;
+        SetSchedule(startAt, endAt);
+    }
+
+    public void SetSchedule(DateTime startAt, DateTime endAt)
+    {
+        if (endAt <= startAt)
+        {
+            throw new ArgumentException("End time must be later than Start time.", nameof(endAt));
+        }
+
+        StartAt = startAt;
+        EndAt = endAt;
+    }
+
+    public Booking Book(string bookedByUserId, DateTime bookedAtUtc)
+    {
+        if (Booking is not null)
+        {
+            throw new InvalidOperationException("The time slot is already booked.");
+        }
+
+        var booking = new Booking(Id, bookedByUserId, bookedAtUtc);
+        Booking = booking;
+
+        return booking;
+    }
 }

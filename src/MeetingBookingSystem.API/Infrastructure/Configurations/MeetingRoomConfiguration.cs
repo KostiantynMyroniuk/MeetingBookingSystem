@@ -8,8 +8,11 @@ public class MeetingRoomConfiguration : IEntityTypeConfiguration<MeetingRoom>
 {
     public void Configure(EntityTypeBuilder<MeetingRoom> builder)
     {
-        builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
-        builder.Property(x => x.Description).HasMaxLength(1000);
-        builder.Property(x => x.Location).HasMaxLength(200);
+        builder.Property(x => x.Name)
+            .IsRequired()
+            .HasMaxLength(200);
+
+        builder.Property(x => x.Description)
+            .HasMaxLength(1000);
     }
 }

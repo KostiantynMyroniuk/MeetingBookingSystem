@@ -5,15 +5,25 @@ namespace MeetingBookingSystem.API.Models.Bookings;
 
 public class Booking
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
-    public Guid MeetingRoomTimeSlotId { get; set; }
+    public Guid MeetingRoomTimeSlotId { get; private set; }
+    public MeetingRoomTimeSlot MeetingRoomTimeSlot { get; private set; } = default!;
 
-    public MeetingRoomTimeSlot MeetingRoomTimeSlot { get; set; } = null!;
+    public string BookedByUserId { get; private set; } = string.Empty;
+    public ApplicationUser BookedByUser { get; private set; } = default!;
 
-    public string BookedByUserId { get; set; } = string.Empty;
+    public DateTime BookedAtUtc { get; private set; }
 
-    public ApplicationUser BookedByUser { get; set; } = null!;
+    private Booking()
+    {
+    }
 
-    public DateTime BookedAtUtc { get; set; }
+    public Booking(Guid timeSlotId, string bookedByUserId, DateTime bookedAtUtc)
+    {
+        Id = Guid.CreateVersion7();
+        MeetingRoomTimeSlotId = timeSlotId;
+        BookedByUserId = bookedByUserId;
+        BookedAtUtc = bookedAtUtc;
+    }
 }

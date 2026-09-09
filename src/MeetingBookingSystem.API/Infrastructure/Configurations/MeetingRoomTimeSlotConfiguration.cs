@@ -19,6 +19,7 @@ public class MeetingRoomTimeSlotConfiguration : IEntityTypeConfiguration<Meeting
             .HasForeignKey<Booking>(x => x.MeetingRoomTimeSlotId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Property(x => x.RowVersion).IsRowVersion();
+        builder.Property(x => x.RowVersion)
+            .IsRowVersion();
     }
 }
