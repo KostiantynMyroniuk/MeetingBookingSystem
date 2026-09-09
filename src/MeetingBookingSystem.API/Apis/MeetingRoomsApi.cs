@@ -52,11 +52,11 @@ namespace MeetingBookingSystem.API.Apis
         }
 
         public static async Task<Results<Ok<MeetingRoomDto>, NotFound>> GetMeetingRoomById(
-            [FromRoute] Guid meetingRoomDto,
+            [FromRoute] Guid meetingRoomId,
             ISender sender,
             CancellationToken ct)
         {
-            var result = await sender.Send(new GetMeetingRoomByIdQuery(meetingRoomDto), ct);
+            var result = await sender.Send(new GetMeetingRoomByIdQuery(meetingRoomId), ct);
 
             return result.IsSuccess 
                 ? TypedResults.Ok(result.Value) 
@@ -64,10 +64,10 @@ namespace MeetingBookingSystem.API.Apis
         }
 
         public static async Task<Ok<PaginatedList<MeetingRoomDto>>> GetMeetingRooms(
-            [FromQuery] int pageNumber,
-            [FromQuery] int pageSize,
             ISender sender,
-            CancellationToken ct)
+            CancellationToken ct,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
             var result = await sender.Send(new GetMeetingRoomsQuery(pageNumber, pageSize), ct);
 
