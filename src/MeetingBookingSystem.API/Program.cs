@@ -17,7 +17,9 @@ app.UseAuthorization();
 if (app.Environment.IsDevelopment())
 {
     await app.MigrateDatabaseAsync();
-    app.MapOpenApi();
+
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 await app.SeedRolesAsync();

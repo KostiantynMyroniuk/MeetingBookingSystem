@@ -19,7 +19,7 @@ public static class Extensions
             options.RegisterServicesFromAssembly(typeof(Extensions).Assembly);
         });
 
-        builder.Services.AddOpenApi();
+        builder.Services.AddSwaggerGen();
         builder.Services.AddProblemDetails();
         builder.Services.AddExceptionHandler<ApiExceptionHandler>();
     }
