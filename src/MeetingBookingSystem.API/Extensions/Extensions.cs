@@ -1,4 +1,6 @@
+using MeetingBookingSystem.API.Features.MeetingRoomTimeSlots.Notifications;
 using MeetingBookingSystem.API.Infrastructure;
+using MeetingBookingSystem.API.Infrastructure.Notifications;
 using MeetingBookingSystem.API.Middleware;
 using MeetingBookingSystem.API.Models.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +24,13 @@ public static class Extensions
         builder.Services.AddSwaggerGen();
         builder.Services.AddProblemDetails();
         builder.Services.AddExceptionHandler<ApiExceptionHandler>();
+    }
+
+    public static void AddSignalR(this IHostApplicationBuilder builder)
+    {
+        builder.Services.AddSignalR();
+
+        builder.Services.AddScoped<IMeetingRoomNotifier, SignalRMeetingRoomNotifier>();
     }
 
     public static void AddIdentityServices(this IHostApplicationBuilder builder)

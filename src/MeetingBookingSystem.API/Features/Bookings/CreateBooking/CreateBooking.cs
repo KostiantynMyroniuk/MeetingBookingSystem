@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using MeetingBookingSystem.API.Common;
+using MeetingBookingSystem.API.Features.MeetingRoomTimeSlots;
+using MeetingBookingSystem.API.Features.MeetingRoomTimeSlots.Notifications;
 using MeetingBookingSystem.API.Infrastructure;
 using MeetingBookingSystem.API.Models.Bookings;
 using MeetingBookingSystem.API.Models.MeetingRooms;
@@ -13,6 +15,7 @@ namespace MeetingBookingSystem.API.Features.Bookings.CreateBooking
 
     public class CreateBookingCommandHandler(
         ApplicationDbContext context,
+        IMeetingRoomNotifier roomNotifier,
         ILogger<CreateBookingCommandHandler> logger) : IRequestHandler<CreateBookingCommand, Result<BookingDto>>
     {
         public async Task<Result<BookingDto>> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
@@ -32,12 +35,32 @@ namespace MeetingBookingSystem.API.Features.Bookings.CreateBooking
             try
             {
                 await context.SaveChangesAsync(cancellationToken);
+
+                await roomNotifier.NotifySlotBooked(timeSlot.MeetingRoomId, );
             }
             catch (DbUpdateConcurrencyException ex)
             {
                 logger.LogWarning(ex, "Time slot {MeetingTimeSlot} already booked", request.TimeSlotId);
 
                 return Result<BookingDto>.Failure(ResultError.Conflict("Time slot already booked"));
+            }
+
+            /// Notifying
+
+            try
+            {
+                var slotDto = new TimeSlotDto(
+                    timeSlot.Id,
+                    timeSlot.MeetingRoomId,
+                    timeSlot.StartAt,
+                    timeSlot.EndAt,
+                    IsBooked: true);
+
+                await roomNotifier.NotifySlotBooked(timeSlot.MeetingRoomId, slotDto);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to notify clients about booked slot {MeetingTimeSlot}", request.TimeSlotId);
             }
 
             return Result<BookingDto>.Success(new BookingDto(

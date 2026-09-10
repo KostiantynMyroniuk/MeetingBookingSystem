@@ -1,4 +1,5 @@
 using MeetingBookingSystem.API.Apis;
+using MeetingBookingSystem.API.Apis.Hubs;
 using MeetingBookingSystem.API.Extensions;
 using MeetingBookingSystem.API.Models.Identity;
 
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddIdentityServices();
 builder.AddApplicationServices();
+builder.AddSignalR();
 
 var app = builder.Build();
 
@@ -30,6 +32,8 @@ app.MapGroup("/api")
 app.MapMeetingRoomsApi();
 app.MapTimeSlotsApi();
 app.MapBookingApi();
+
+app.MapHub<MeetingRoomHub>("/hubs/meeting-rooms");
 
 app.Run();
 
