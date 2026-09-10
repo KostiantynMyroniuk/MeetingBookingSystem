@@ -24,7 +24,9 @@ if (app.Environment.IsDevelopment())
 
 await app.SeedRolesAsync();
 
-app.MapIdentityApi<ApplicationUser>();
+app.MapGroup("/api")
+    .MapIdentityApi<ApplicationUser>();
+
 app.MapMeetingRoomsApi();
 app.MapTimeSlotsApi();
 app.MapBookingApi();
