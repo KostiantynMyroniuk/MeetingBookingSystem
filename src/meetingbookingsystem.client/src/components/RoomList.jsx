@@ -1,0 +1,59 @@
+import { useEffect, useState } from 'react';
+import { fetchMeetingRooms } from '../rooms/roomsApi';
+
+export function RoomList({ selectedRoomId, onSelectRoom }) {
+    const [rooms, setRooms] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        let isMounted = true;
+
+        fetchMeetingRooms()
+            .then((data) => {
+                if (isMounted) {
+                    setRooms(data.items);
+                }
+            })
+            .catch(() => {
+                if (isMounted) {
+                    setError('Не вдалося завантажити список кімнат');
+                }
+            })
+            .finally(() => {
+                if (isMounted) {
+                    setIsLoading(false);
+                }
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
+    if (isLoading) {
+        return <p>Завантаження кімнат...</p>;
+    }
+
+    if (error) {
+        return <p role="alert">{error}</p>;
+    }
+
+    if (rooms.length === 0) {
+        return <p>Кімнат ще немає</p>;
+    }
+
+    return (
+        <ul>
+            {rooms.map((room) => (
+                <li key={room.id}>
+                    <button type="button" onClick={() => onSelectRoom(room.id)}>
+                        {room.name}
+                        {room.id === selectedRoomId ? ' ✓' : ''}
+                    </button>
+                    {room.description && <p>{room.description}</p>}
+                </li>
+            ))}
+        </ul>
+    );
+}
