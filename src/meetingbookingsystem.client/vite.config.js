@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import plugin from '@vitejs/plugin-react';
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.API_URL;
 
 // https://vitejs.dev/config/
 export default defineConfig({
