@@ -8,7 +8,8 @@ namespace MeetingBookingSystem.Tests;
 
 public class BookingConcurrencyTestFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly MsSqlContainer _sqlContainer = new MsSqlBuilder().Build();
+    private readonly MsSqlContainer _sqlContainer = 
+        new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest").Build();
 
     public Task InitializeAsync() => _sqlContainer.StartAsync();
 

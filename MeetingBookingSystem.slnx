@@ -6,5 +6,7 @@
       <Deploy />
     </Project>
   </Folder>
-  <Folder Name="/tests/" />
+  <Folder Name="/tests/">
+    <Project Path="tests/MeetingBookingSystem.Tests/MeetingBookingSystem.Tests.csproj" />
+  </Folder>
 </Solution>

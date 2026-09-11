@@ -18,6 +18,7 @@ namespace MeetingBookingSystem.API.Features.MeetingRooms.GetMeetingRooms
             var totalCount = await query.CountAsync(cancellationToken);
 
             var rooms = await query
+                .OrderBy(r => r.Name)
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(room => new MeetingRoomDto(

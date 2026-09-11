@@ -21,6 +21,7 @@ public static class Extensions
 
         builder.Services.Configure<AdminOptions>(builder.Configuration.GetSection("Admin"));
 
+        builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddProblemDetails();
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
