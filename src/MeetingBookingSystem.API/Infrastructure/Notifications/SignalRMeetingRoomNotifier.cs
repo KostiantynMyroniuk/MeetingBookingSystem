@@ -8,12 +8,12 @@ namespace MeetingBookingSystem.API.Infrastructure.Notifications
     public class SignalRMeetingRoomNotifier(
         IHubContext<MeetingRoomHub, IMeetingRoomClient> hubContext) : IMeetingRoomNotifier
     {
-        public Task NotifySlotBooked(Guid meetingRoomId, TimeSlotDto timeSlotDto)
+        public Task NotifySlotStatusChanged(Guid meetingRoomId, TimeSlotDto timeSlotDto)
         {
             return hubContext
                 .Clients
                 .Group(MeetingRoomHub.GetGroupName(meetingRoomId))
-                .SlotBooked(timeSlotDto);
+                .SlotStatusChanged(timeSlotDto);
         }
     }
 }

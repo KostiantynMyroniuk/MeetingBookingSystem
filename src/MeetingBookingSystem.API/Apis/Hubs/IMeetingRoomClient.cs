@@ -4,6 +4,6 @@ namespace MeetingBookingSystem.API.Apis.Hubs
 {
     public interface IMeetingRoomClient
     {
-        Task SlotBooked(TimeSlotDto timeSlotDto);
+        Task SlotStatusChanged(TimeSlotDto timeSlotDto);
     }
 }

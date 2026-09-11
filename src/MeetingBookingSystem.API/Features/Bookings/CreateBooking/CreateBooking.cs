@@ -61,7 +61,7 @@ namespace MeetingBookingSystem.API.Features.Bookings.CreateBooking
                     timeSlot.EndAt,
                     IsBooked: true);
 
-                await roomNotifier.NotifySlotBooked(timeSlot.MeetingRoomId, slotDto);
+                await roomNotifier.NotifySlotStatusChanged(timeSlot.MeetingRoomId, slotDto);
             }
             catch (Exception ex)
             {
