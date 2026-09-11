@@ -15,6 +15,24 @@ export function RequireAuth({ children }) {
     return children;
 }
 
+export function RequireAdmin({ children }) {
+    const { isAuthenticated, isAdmin, isAuthLoading } = useAuth();
+
+    if (isAuthLoading) {
+        return <p>Завантаження...</p>;
+    }
+
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
+    }
+
+    if (!isAdmin) {
+        return <Navigate to="/rooms" replace />;
+    }
+
+    return children;
+}
+
 export function RedirectIfAuthenticated({ children }) {
     const { isAuthenticated, isAuthLoading } = useAuth();
 

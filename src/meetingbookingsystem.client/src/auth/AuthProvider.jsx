@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { AuthContext } from './AuthContext';
-import { fetchCurrentUser, loginUser, registerUser } from './authApi';
+import { fetchCurrentUser, loginUser, logoutUser, registerUser } from './authApi';
 
 export default function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
@@ -43,12 +43,22 @@ export default function AuthProvider({ children }) {
         return login(email, password);
     }, [login]);
 
+    const logout = useCallback(async () => {
+        await logoutUser();
+        setUser(null);
+    }, []);
+
+    const roles = user?.roles ?? [];
+
     const value = {
         user,
+        roles,
         isAuthenticated: Boolean(user),
+        isAdmin: roles.includes('Admin'),
         isAuthLoading,
         login,
         register,
+        logout,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

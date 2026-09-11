@@ -9,6 +9,10 @@ export async function loginUser(email, password) {
 }
 
 export async function fetchCurrentUser() {
-    const response = await api.get('/manage/info');
+    const response = await api.get('/me');
     return response.data;
+}
+
+export async function logoutUser() {
+    await api.post('/logout');
 }
