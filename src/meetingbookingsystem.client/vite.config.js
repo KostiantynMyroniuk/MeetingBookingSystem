@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import plugin from '@vitejs/plugin-react';
+const API_URL = import.meta.env.VITE_API_URL;
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -7,12 +8,12 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: 'http://localhost:5241',
+                target: API_URL,
                 changeOrigin: true,
                 secure: false,
             },
             '/hubs': {
-                target: 'http://localhost:5241',
+                target: API_URL,
                 changeOrigin: true,
                 secure: false,
                 ws: true
