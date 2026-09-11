@@ -1,0 +1,50 @@
+name: Deploy Backend to Azure Web App
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/MeetingBookingSystem.API/**'
+      - '.github/workflows/backend-ci-cd.yml'
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: booking-system-kuddn
+  AZURE_WEBAPP_PACKAGE_PATH: '.'
+  DOTNET_VERSION: '10.0.x'
+  PROJECT_PATH: 'src/MeetingBookingSystem.API/MeetingBookingSystem.API.csproj'
+  PUBLISH_PATH: './publish'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Build
+        run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test --configuration Release --no-build
+        continue-on-error: false
+
+      - name: Publish
+        run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Release --no-build --output ${{ env.PUBLISH_PATH }}/myapp
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_BACKEND_PUBLISH_PROFILE }}
+          package: ${{ env.PUBLISH_PATH }}/myapp
