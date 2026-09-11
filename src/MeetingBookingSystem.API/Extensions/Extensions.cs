@@ -5,6 +5,7 @@ using MeetingBookingSystem.API.Infrastructure.Seeders;
 using MeetingBookingSystem.API.Middleware;
 using MeetingBookingSystem.API.Models.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Azure.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace MeetingBookingSystem.API.Extensions;
@@ -43,7 +44,14 @@ public static class Extensions
 
     public static void AddSignalR(this IHostApplicationBuilder builder)
     {
-        builder.Services.AddSignalR();
+        var signalRBuilder = builder.Services.AddSignalR();
+
+        var azureSignalRConnectionString = builder.Configuration.GetConnectionString("AzureSignalR");
+
+        if (!string.IsNullOrWhiteSpace(azureSignalRConnectionString))
+        {
+            signalRBuilder.AddAzureSignalR(azureSignalRConnectionString);
+        }
 
         builder.Services.AddScoped<IMeetingRoomNotifier, SignalRMeetingRoomNotifier>();
     }
