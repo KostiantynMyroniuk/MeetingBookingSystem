@@ -23,6 +23,7 @@ namespace MeetingBookingSystem.API.Features.MeetingRoomTimeSlots.GetTimeSlots
                 .CountAsync(cancellationToken);
 
             var slots = await query
+                .OrderBy(s => s.StartAt)
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(s => new TimeSlotDto(

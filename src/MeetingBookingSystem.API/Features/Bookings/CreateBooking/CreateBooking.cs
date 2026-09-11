@@ -34,6 +34,7 @@ namespace MeetingBookingSystem.API.Features.Bookings.CreateBooking
 
             try
             {
+                context.Bookings.Add(booking);
                 await context.SaveChangesAsync(cancellationToken);
             }
             catch (DbUpdateConcurrencyException ex)
