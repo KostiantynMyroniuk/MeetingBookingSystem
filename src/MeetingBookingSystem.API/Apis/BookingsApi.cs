@@ -3,6 +3,7 @@ using MeetingBookingSystem.API.Common;
 using MeetingBookingSystem.API.Extensions;
 using MeetingBookingSystem.API.Features.Bookings;
 using MeetingBookingSystem.API.Features.Bookings.CreateBooking;
+using MeetingBookingSystem.API.Features.Bookings.GetAllBookings;
 using MeetingBookingSystem.API.Features.Bookings.GetMyBookings;
 using MeetingBookingSystem.API.Models.Identity;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -24,6 +25,10 @@ namespace MeetingBookingSystem.API.Apis
             bookingGroup.MapGet("my-bookings", GetMyBookings)
                 .WithName("GetMyBookings")
                 .RequireAuthorization(AuthorizationPolicies.AnyUser);
+
+            bookingGroup.MapGet("all", GetAllBookings)
+                .WithName("GetAllBookings")
+                .RequireAuthorization(AuthorizationPolicies.AdminOnly);
         }
 
         public record CreateBookingRequest(Guid TimeSlotId);
@@ -64,6 +69,20 @@ namespace MeetingBookingSystem.API.Apis
                 return TypedResults.BadRequest();
 
             var result = await sender.Send(new GetMyBookingsQuery(userId, pageNumber, pageSize), ct);
+
+            if (result.IsSuccess)
+                return TypedResults.Ok(result.Value);
+
+            return TypedResults.BadRequest();
+        }
+
+        public static async Task<Results<Ok<PaginatedList<BookingDto>>, BadRequest>> GetAllBookings(
+            ISender sender,
+            CancellationToken ct,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            var result = await sender.Send(new GetAllBookingsQuery(pageNumber, pageSize), ct);
 
             if (result.IsSuccess)
                 return TypedResults.Ok(result.Value);
