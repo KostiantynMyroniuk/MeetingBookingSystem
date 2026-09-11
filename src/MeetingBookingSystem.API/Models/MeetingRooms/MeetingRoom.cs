@@ -1,3 +1,5 @@
+using MeetingBookingSystem.API.Infrastructure.Exceptions;
+
 namespace MeetingBookingSystem.API.Models.MeetingRooms;
 
 public class MeetingRoom
@@ -31,7 +33,7 @@ public class MeetingRoom
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new ArgumentException("Meeting room name is required.", nameof(name));
+            throw new MeetingRoomValidationException("Meeting room name is required.");
         }
 
         Name = name;
@@ -40,20 +42,5 @@ public class MeetingRoom
     public void UpdateDescription(string? description)
     {
         Description = description;
-    }
-
-    public MeetingRoomTimeSlot AddTimeSlot(DateTime startAt, DateTime endAt)
-    {
-        var timeSlot = new MeetingRoomTimeSlot(Id, startAt, endAt);
-        _timeSlots.Add(timeSlot);
-        return timeSlot;
-    }
-
-    public void RemoveTimeSlot(Guid timeSlotId)
-    {
-        var timeSlot = _timeSlots.FirstOrDefault(x => x.Id == timeSlotId)
-            ?? throw new InvalidOperationException("Meeting room time slot was not found.");
-
-        _timeSlots.Remove(timeSlot);
     }
 }

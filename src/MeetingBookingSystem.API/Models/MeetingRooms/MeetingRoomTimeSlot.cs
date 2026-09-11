@@ -1,3 +1,4 @@
+using MeetingBookingSystem.API.Infrastructure.Exceptions;
 using MeetingBookingSystem.API.Models.Bookings;
 
 namespace MeetingBookingSystem.API.Models.MeetingRooms;
@@ -32,7 +33,7 @@ public class MeetingRoomTimeSlot
     {
         if (endAt <= startAt)
         {
-            throw new ArgumentException("End time must be later than Start time.", nameof(endAt));
+            throw new TimeSlotValidationException("End time must be later than Start time.");
         }
 
         StartAt = startAt;
@@ -41,9 +42,9 @@ public class MeetingRoomTimeSlot
 
     public Booking Book(string bookedByUserId)
     {
-        if (Booking is not null)
+        if (IsBooked)
         {
-            throw new InvalidOperationException("The time slot is already booked.");
+            throw new TimeSlotConflictException("The time slot is already booked.");
         }
 
         IsBooked = true;

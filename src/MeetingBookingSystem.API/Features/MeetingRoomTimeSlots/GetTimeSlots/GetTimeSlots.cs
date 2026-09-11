@@ -16,13 +16,13 @@ namespace MeetingBookingSystem.API.Features.MeetingRoomTimeSlots.GetTimeSlots
     {
         public async Task<Result<PaginatedList<TimeSlotDto>>> Handle(GetTimeSlotsQuery request, CancellationToken cancellationToken)
         {
-            var query = context.MeetingRoomTimeSlots.AsNoTracking();
+            var query = context.MeetingRoomTimeSlots.AsNoTracking()
+                .Where(s => s.MeetingRoomId == request.MeetingRoomId);
+
             var totalCount = await query
-                .Where(s => s.MeetingRoomId == request.MeetingRoomId)
                 .CountAsync(cancellationToken);
 
             var slots = await query
-                .Where(s => s.MeetingRoomId == request.MeetingRoomId)
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(s => new TimeSlotDto(

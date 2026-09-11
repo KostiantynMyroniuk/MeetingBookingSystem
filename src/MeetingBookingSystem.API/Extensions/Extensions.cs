@@ -23,7 +23,7 @@ public static class Extensions
 
         builder.Services.AddSwaggerGen();
         builder.Services.AddProblemDetails();
-        builder.Services.AddExceptionHandler<ApiExceptionHandler>();
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     }
 
     public static void AddSignalR(this IHostApplicationBuilder builder)
@@ -40,7 +40,7 @@ public static class Extensions
             options.AddPolicy("BookingFrontend", policy =>
             {
                 policy
-                    .WithOrigins(builder.Configuration["Frontend:BaseUrl"] ?? throw new InvalidOperationException("Frontend base url not configured"))
+                    .WithOrigins(builder.Configuration["Frontend:BaseUrl"] ?? throw new InvalidOperationException("Frontend 'BaseUrl' not configured"))
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();

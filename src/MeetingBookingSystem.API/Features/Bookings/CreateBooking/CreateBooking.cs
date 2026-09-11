@@ -35,8 +35,6 @@ namespace MeetingBookingSystem.API.Features.Bookings.CreateBooking
             try
             {
                 await context.SaveChangesAsync(cancellationToken);
-
-                await roomNotifier.NotifySlotBooked(timeSlot.MeetingRoomId, );
             }
             catch (DbUpdateConcurrencyException ex)
             {
