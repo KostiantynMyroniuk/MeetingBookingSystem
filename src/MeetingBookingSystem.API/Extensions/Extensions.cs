@@ -12,10 +12,6 @@ public static class Extensions
 {
     public static void AddApplicationServices(this IHostApplicationBuilder builder)
     {
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("BookingServiceDb")
-                                ?? throw new InvalidOperationException("Connection string 'BookingServiceDb' is not configured.")));
-
         builder.Services.AddMediatR(options =>
         {
             options.RegisterServicesFromAssembly(typeof(Extensions).Assembly);
@@ -24,6 +20,22 @@ public static class Extensions
         builder.Services.AddSwaggerGen();
         builder.Services.AddProblemDetails();
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+    }
+
+    public static void AddPersistence(this IHostApplicationBuilder builder)
+    {
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(
+                builder.Configuration.GetConnectionString("BookingServiceDb") 
+                    ?? throw new InvalidOperationException("Connection string 'BookingServiceDb' is not configured."),
+                sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(10),
+                        errorNumbersToAdd: null
+                    );
+                }));
     }
 
     public static void AddSignalR(this IHostApplicationBuilder builder)

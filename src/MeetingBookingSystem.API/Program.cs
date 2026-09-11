@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddIdentityServices();
 builder.AddApplicationServices();
+builder.AddPersistence();
 builder.AddSignalR();
 builder.AddCors();
 
