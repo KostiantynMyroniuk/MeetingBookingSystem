@@ -33,6 +33,21 @@ public static class Extensions
         builder.Services.AddScoped<IMeetingRoomNotifier, SignalRMeetingRoomNotifier>();
     }
 
+    public static void AddCors(this IHostApplicationBuilder builder)
+    {
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("BookingFrontend", policy =>
+            {
+                policy
+                    .WithOrigins(builder.Configuration["Frontend:BaseUrl"] ?? throw new InvalidOperationException("Frontend base url not configured"))
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+        });
+    }
+
     public static void AddIdentityServices(this IHostApplicationBuilder builder)
     {
         builder.Services

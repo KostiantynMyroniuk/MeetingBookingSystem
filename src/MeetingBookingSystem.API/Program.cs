@@ -8,10 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddIdentityServices();
 builder.AddApplicationServices();
 builder.AddSignalR();
+builder.AddCors();
 
 var app = builder.Build();
 
 app.UseExceptionHandler();
+
+app.UseCors("BookingFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
