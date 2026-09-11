@@ -1,7 +1,7 @@
 using MeetingBookingSystem.API.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 
-namespace MeetingBookingSystem.API.Infrastructure;
+namespace MeetingBookingSystem.API.Infrastructure.Seeders;
 
 public static class IdentityRoleSeeder
 {

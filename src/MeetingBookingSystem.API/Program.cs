@@ -28,7 +28,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-await app.SeedRolesAsync();
+await app.SeedDatabaseDefaults();
 
 app.MapGroup("/api")
     .MapIdentityApi<ApplicationUser>();

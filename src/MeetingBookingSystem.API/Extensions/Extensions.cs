@@ -1,6 +1,7 @@
 using MeetingBookingSystem.API.Features.MeetingRoomTimeSlots.Notifications;
 using MeetingBookingSystem.API.Infrastructure;
 using MeetingBookingSystem.API.Infrastructure.Notifications;
+using MeetingBookingSystem.API.Infrastructure.Seeders;
 using MeetingBookingSystem.API.Middleware;
 using MeetingBookingSystem.API.Models.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -16,6 +17,8 @@ public static class Extensions
         {
             options.RegisterServicesFromAssembly(typeof(Extensions).Assembly);
         });
+
+        builder.Services.Configure<AdminOptions>(builder.Configuration.GetSection("Admin"));
 
         builder.Services.AddSwaggerGen();
         builder.Services.AddProblemDetails();
@@ -63,7 +66,15 @@ public static class Extensions
     public static void AddIdentityServices(this IHostApplicationBuilder builder)
     {
         builder.Services
-            .AddIdentityApiEndpoints<ApplicationUser>()
+            .AddIdentityApiEndpoints<ApplicationUser>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireDigit = false;
+            })
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -74,6 +85,12 @@ public static class Extensions
 
             option.AddPolicy(AuthorizationPolicies.AdminOnly, policy =>
                 policy.RequireRole(IdentityRoles.Admin));
+        });
+
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            options.ExpireTimeSpan = TimeSpan.FromDays(1);
+            options.SlidingExpiration = true;
         });
 
         builder.Services.AddHttpContextAccessor();
