@@ -83,7 +83,7 @@ The Vite dev server proxies `/api` and `/hubs` to the backend (`http://localhost
 
 ### Creating a room
 
-Time slots are generated automatically when an admin creates a room: 9:00–18:00, hourly, for the next 7 days (63 slots). No manual slot creation is needed.
+Time slots are generated automatically when an admin creates a room: 9:00–18:00, hourly. No manual slot creation is needed.
 
 ## Repository / process notes
 
