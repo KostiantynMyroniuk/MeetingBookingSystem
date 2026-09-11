@@ -43,6 +43,12 @@ namespace MeetingBookingSystem.API.Features.Bookings.CreateBooking
 
                 return Result<BookingDto>.Failure(ResultError.Conflict("Time slot already booked"));
             }
+            catch (DbUpdateException ex)
+            {
+                logger.LogWarning(ex, "Time slot {MeetingTimeSlot} already booked", request.TimeSlotId);
+
+                return Result<BookingDto>.Failure(ResultError.Conflict("Time slot already booked"));
+            }
 
             /// Notifying
 

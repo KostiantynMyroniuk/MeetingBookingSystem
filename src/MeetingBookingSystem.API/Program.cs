@@ -36,8 +36,13 @@ app.MapGroup("/api").MapLogoutApi<ApplicationUser>();
 app.MapMeetingRoomsApi();
 app.MapTimeSlotsApi();
 app.MapBookingApi();
+app.MapCurrentUserApi();
 
 app.MapHub<MeetingRoomHub>("/hubs/meeting-rooms");
 
 app.Run();
+
+public partial class Program
+{
+}
 
