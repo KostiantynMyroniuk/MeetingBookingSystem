@@ -120,12 +120,14 @@ export default function AdminRoomsPage() {
                             />
                         </label>
                     </div>
-                    <button type="submit" disabled={isSaving}>
-                        Зберегти
-                    </button>
-                    <button type="button" onClick={cancelEdit} disabled={isSaving}>
-                        Скасувати
-                    </button>
+                    <div className="form-actions">
+                        <button type="submit" disabled={isSaving}>
+                            Зберегти
+                        </button>
+                        <button type="button" className="btn-secondary" onClick={cancelEdit} disabled={isSaving}>
+                            Скасувати
+                        </button>
+                    </div>
                 </form>
             ) : (
                 <button type="button" onClick={startCreate}>
@@ -136,18 +138,20 @@ export default function AdminRoomsPage() {
             {isLoading ? (
                 <p>Завантаження...</p>
             ) : (
-                <ul>
+                <ul className="admin-rooms-list">
                     {rooms.map((room) => (
                         <li key={room.id}>
-                            <strong>{room.name}</strong> {room.description}
-                            {' '}
-                            <button type="button" onClick={() => startEdit(room)}>
-                                Редагувати
-                            </button>
-                            {' '}
-                            <button type="button" onClick={() => handleDelete(room.id)}>
-                                Видалити
-                            </button>
+                            <span>
+                                <strong>{room.name}</strong> {room.description}
+                            </span>
+                            <span className="admin-rooms-list__actions">
+                                <button type="button" className="btn-secondary" onClick={() => startEdit(room)}>
+                                    Редагувати
+                                </button>
+                                <button type="button" className="btn-danger" onClick={() => handleDelete(room.id)}>
+                                    Видалити
+                                </button>
+                            </span>
                         </li>
                     ))}
                 </ul>

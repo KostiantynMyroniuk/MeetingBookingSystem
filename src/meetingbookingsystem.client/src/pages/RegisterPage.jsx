@@ -5,7 +5,7 @@ export default function RegisterPage() {
     const navigate = useNavigate();
 
     return (
-        <div className="App">
+        <div className="auth-page">
             <h1>Система бронювання</h1>
             <RegisterForm onSuccess={() => navigate('/rooms')} />
             <p>
