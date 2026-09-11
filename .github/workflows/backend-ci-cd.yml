@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'src/MeetingBookingSystem.API/**'
+      - 'tests/MeetingBookingSystem.Tests/**'
       - '.github/workflows/backend-ci-cd.yml'
   workflow_dispatch:
 
@@ -14,6 +15,7 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: '.'
   DOTNET_VERSION: '10.0.x'
   PROJECT_PATH: 'src/MeetingBookingSystem.API/MeetingBookingSystem.API.csproj'
+  TEST_PROJECT_PATH: 'tests/MeetingBookingSystem.Tests/MeetingBookingSystem.Tests.csproj'
   PUBLISH_PATH: './publish'
 
 jobs:
@@ -30,14 +32,13 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore dependencies
-        run: dotnet restore ${{ env.PROJECT_PATH }}
+        run: dotnet restore ${{ env.TEST_PROJECT_PATH }}
 
       - name: Build
-        run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
+        run: dotnet build ${{ env.TEST_PROJECT_PATH }} --configuration Release --no-restore
 
       - name: Run tests
-        run: dotnet test --configuration Release --no-build
-        continue-on-error: false
+        run: dotnet test ${{ env.TEST_PROJECT_PATH }} --configuration Release --no-build
 
       - name: Publish
         run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Release --no-build --output ${{ env.PUBLISH_PATH }}/myapp
