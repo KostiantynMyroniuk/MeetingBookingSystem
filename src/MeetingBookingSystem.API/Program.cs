@@ -42,3 +42,7 @@ app.MapHub<MeetingRoomHub>("/hubs/meeting-rooms");
 
 app.Run();
 
+public partial class Program
+{
+}
+
