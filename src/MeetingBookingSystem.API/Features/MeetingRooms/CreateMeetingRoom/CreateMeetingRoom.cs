@@ -13,7 +13,7 @@ namespace MeetingBookingSystem.API.Features.MeetingRooms.CreateMeetingRoom
         ApplicationDbContext context,
         ILogger<CreateMeetingRoomCommandHandler> logger) : IRequestHandler<CreateMeetingRoomCommand, Result<MeetingRoomDto>>
     {
-        private const int DefaultSlotDays = 7;
+        private const int DefaultSlotDays = 1;
         private const int DefaultSlotStartHour = 9;
         private const int DefaultSlotEndHour = 18;
 

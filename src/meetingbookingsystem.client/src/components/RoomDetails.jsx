@@ -93,7 +93,7 @@ export function RoomDetails({ meetingRoomId }) {
                     {slots.map((slot) => (
                         <li key={slot.id} className={`slot ${slot.isBooked ? 'slot--booked' : 'slot--free'}`}>
                             <span>
-                                {new Date(slot.startAt).toLocaleString()} - {new Date(slot.endAt).toLocaleString()}
+                                {new Date(slot.startAt).toLocaleTimeString()} - {new Date(slot.endAt).toLocaleTimeString()}
                             </span>
                             {slot.isBooked ? (
                                 <span className="slot__status">заброньовано</span>
