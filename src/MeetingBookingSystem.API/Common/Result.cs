@@ -10,6 +10,9 @@ public sealed record ResultError(int StatusCode, string Code, string Title, stri
 
     public static ResultError Conflict(string message, string code = "conflict", string title = "Conflict")
         => new(StatusCodes.Status409Conflict, code, title, message);
+
+    public static ResultError Forbidden(string message, string code = "forbidden", string title = "Forbidden")
+        => new(StatusCodes.Status403Forbidden, code, title, message);
 }
 
 public sealed record Result

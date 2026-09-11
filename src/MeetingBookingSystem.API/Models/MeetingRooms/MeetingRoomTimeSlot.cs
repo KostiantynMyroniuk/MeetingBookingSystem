@@ -53,4 +53,15 @@ public class MeetingRoomTimeSlot
 
         return booking;
     }
+
+    public void Release()
+    {
+        if (!IsBooked)
+        {
+            throw new TimeSlotConflictException("The time slot is not booked.");
+        }
+
+        IsBooked = false;
+        Booking = null;
+    }
 }

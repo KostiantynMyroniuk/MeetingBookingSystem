@@ -17,9 +17,8 @@ export function NavBar() {
                     <Link to="/admin/bookings">Усі бронювання</Link>
                 </>
             )}
-            {' | '}
+            <span className="navbar__spacer" />
             <span>{user?.email}</span>
-            {' '}
             <button type="button" onClick={logout}>
                 Вийти
             </button>

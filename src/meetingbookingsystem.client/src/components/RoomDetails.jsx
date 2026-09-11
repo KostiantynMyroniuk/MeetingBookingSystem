@@ -38,13 +38,13 @@ export function RoomDetails({ meetingRoomId }) {
         };
     }, [meetingRoomId]);
 
-    const handleSlotBooked = useCallback((updatedSlot) => {
+    const handleSlotStatusChanged = useCallback((updatedSlot) => {
         setSlots((current) =>
             current.map((slot) => (slot.id === updatedSlot.id ? { ...slot, isBooked: updatedSlot.isBooked } : slot)),
         );
     }, []);
 
-    useRoomSlotUpdates(meetingRoomId, handleSlotBooked);
+    useRoomSlotUpdates(meetingRoomId, handleSlotStatusChanged);
 
     async function handleBook(slotId) {
         setBookingError('');
@@ -82,19 +82,21 @@ export function RoomDetails({ meetingRoomId }) {
     }
 
     return (
-        <div>
+        <div className="room-details">
             <h2>{room.name}</h2>
             {room.description && <p>{room.description}</p>}
             {bookingError && <p role="alert">{bookingError}</p>}
             {slots.length === 0 ? (
                 <p>Слотів ще немає</p>
             ) : (
-                <ul>
+                <ul className="slot-list">
                     {slots.map((slot) => (
-                        <li key={slot.id}>
-                            {new Date(slot.startAt).toLocaleString()} - {new Date(slot.endAt).toLocaleString()}
+                        <li key={slot.id} className={`slot ${slot.isBooked ? 'slot--booked' : 'slot--free'}`}>
+                            <span>
+                                {new Date(slot.startAt).toLocaleString()} - {new Date(slot.endAt).toLocaleString()}
+                            </span>
                             {slot.isBooked ? (
-                                ' (заброньовано)'
+                                <span className="slot__status">заброньовано</span>
                             ) : (
                                 <button
                                     type="button"

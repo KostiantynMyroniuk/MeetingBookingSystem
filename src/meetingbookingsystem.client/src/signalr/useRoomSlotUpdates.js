@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { getRoomHubConnection, startRoomHubConnection } from './roomHubConnection';
 
-export function useRoomSlotUpdates(meetingRoomId, onSlotBooked) {
+export function useRoomSlotUpdates(meetingRoomId, onSlotStatusChanged) {
     useEffect(() => {
         if (!meetingRoomId) {
             return undefined;
@@ -11,13 +11,13 @@ export function useRoomSlotUpdates(meetingRoomId, onSlotBooked) {
         let isJoined = false;
         let isCancelled = false;
 
-        const handleSlotBooked = (timeSlotDto) => {
+        const handleSlotStatusChanged = (timeSlotDto) => {
             if (timeSlotDto.meetingRoomId === meetingRoomId) {
-                onSlotBooked(timeSlotDto);
+                onSlotStatusChanged(timeSlotDto);
             }
         };
 
-        hub.on('SlotBooked', handleSlotBooked);
+        hub.on('SlotStatusChanged', handleSlotStatusChanged);
 
         startRoomHubConnection()
             .then(() => {
@@ -32,11 +32,11 @@ export function useRoomSlotUpdates(meetingRoomId, onSlotBooked) {
 
         return () => {
             isCancelled = true;
-            hub.off('SlotBooked', handleSlotBooked);
+            hub.off('SlotStatusChanged', handleSlotStatusChanged);
 
             if (isJoined) {
                 hub.invoke('LeaveGroup', meetingRoomId).catch(() => {});
             }
         };
-    }, [meetingRoomId, onSlotBooked]);
+    }, [meetingRoomId, onSlotStatusChanged]);
 }

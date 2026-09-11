@@ -44,14 +44,17 @@ export function RoomList({ selectedRoomId, onSelectRoom }) {
     }
 
     return (
-        <ul>
+        <ul className="room-list">
             {rooms.map((room) => (
                 <li key={room.id}>
-                    <button type="button" onClick={() => onSelectRoom(room.id)}>
-                        {room.name}
-                        {room.id === selectedRoomId ? ' ✓' : ''}
+                    <button
+                        type="button"
+                        className={`room-card${room.id === selectedRoomId ? ' room-card--selected' : ''}`}
+                        onClick={() => onSelectRoom(room.id)}
+                    >
+                        <span>{room.name}</span>
+                        {room.description && <span className="room-card__description">{room.description}</span>}
                     </button>
-                    {room.description && <p>{room.description}</p>}
                 </li>
             ))}
         </ul>

@@ -14,3 +14,7 @@ export async function fetchAllBookings(pageNumber = 1, pageSize = 10) {
     const response = await api.get('/bookings/all', { params: { pageNumber, pageSize } });
     return response.data;
 }
+
+export async function cancelBooking(bookingId) {
+    await api.delete(`/bookings/${bookingId}`);
+}

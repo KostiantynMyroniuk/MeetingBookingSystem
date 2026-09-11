@@ -2,6 +2,6 @@
 {
     public interface IMeetingRoomNotifier
     {
-        Task NotifySlotBooked(Guid meetingRoomId, TimeSlotDto timeSlotDto);
+        Task NotifySlotStatusChanged(Guid meetingRoomId, TimeSlotDto timeSlotDto);
     }
 }

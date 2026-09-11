@@ -2,6 +2,7 @@
 using MeetingBookingSystem.API.Common;
 using MeetingBookingSystem.API.Extensions;
 using MeetingBookingSystem.API.Features.Bookings;
+using MeetingBookingSystem.API.Features.Bookings.CancelBooking;
 using MeetingBookingSystem.API.Features.Bookings.CreateBooking;
 using MeetingBookingSystem.API.Features.Bookings.GetAllBookings;
 using MeetingBookingSystem.API.Features.Bookings.GetMyBookings;
@@ -29,6 +30,10 @@ namespace MeetingBookingSystem.API.Apis
             bookingGroup.MapGet("all", GetAllBookings)
                 .WithName("GetAllBookings")
                 .RequireAuthorization(AuthorizationPolicies.AdminOnly);
+
+            bookingGroup.MapDelete("{bookingId:guid}", CancelBooking)
+                .WithName("CancelBooking")
+                .RequireAuthorization(AuthorizationPolicies.AnyUser);
         }
 
         public record CreateBookingRequest(Guid TimeSlotId);
@@ -88,6 +93,31 @@ namespace MeetingBookingSystem.API.Apis
                 return TypedResults.Ok(result.Value);
 
             return TypedResults.BadRequest();
+        }
+
+        public static async Task<Results<NoContent, JsonHttpResult<string>, NotFound, Conflict<string>, BadRequest>> CancelBooking(
+            Guid bookingId,
+            ISender sender,
+            IHttpContextAccessor httpContextAccessor,
+            CancellationToken ct)
+        {
+            var userId = httpContextAccessor.GetRequiredUserId();
+
+            if (userId == null)
+                return TypedResults.BadRequest();
+
+            var result = await sender.Send(new CancelBookingCommand(userId, bookingId), ct);
+
+            if (result.IsSuccess)
+                return TypedResults.NoContent();
+
+            return result.Error!.StatusCode switch
+            {
+                StatusCodes.Status404NotFound => TypedResults.NotFound(),
+                StatusCodes.Status403Forbidden => TypedResults.Json(result.Error.Message, statusCode: StatusCodes.Status403Forbidden),
+                StatusCodes.Status409Conflict => TypedResults.Conflict(result.Error.Message),
+                _ => TypedResults.BadRequest()
+            };
         }
     }
 }

@@ -5,7 +5,7 @@ export default function LoginPage() {
     const navigate = useNavigate();
 
     return (
-        <div className="App">
+        <div className="auth-page">
             <h1>Система бронювання</h1>
             <LoginForm onSuccess={() => navigate('/rooms')} />
             <p>
