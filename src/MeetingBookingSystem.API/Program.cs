@@ -30,8 +30,8 @@ if (app.Environment.IsDevelopment())
 
 await app.SeedDatabaseDefaults();
 
-app.MapGroup("/api")
-    .MapIdentityApi<ApplicationUser>();
+app.MapGroup("/api").MapIdentityApi<ApplicationUser>();
+app.MapGroup("/api").MapLogoutApi<ApplicationUser>();
 
 app.MapMeetingRoomsApi();
 app.MapTimeSlotsApi();
