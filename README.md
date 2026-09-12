@@ -2,26 +2,28 @@
 
 A booking system for a limited set of meeting rooms where multiple users may try to book the same time slot at the same time. The system guarantees a slot is never double-booked and reflects booking status to all viewers in real time via SignalR.
 
-## Tech stack
-
-- **Backend:** ASP.NET Core (.NET 10), Minimal APIs, CQRS via MediatR, Entity Framework Core, SQL Server
-- **Frontend:** React 19, React Router, Axios, Vite, `@microsoft/signalr`
-- **Real-time:** SignalR (local by default, switches to Azure SignalR Service automatically when `ConnectionStrings:AzureSignalR` is configured)
-- **Tests:** xUnit, `Microsoft.AspNetCore.Mvc.Testing`, Testcontainers (spins up a real, disposable SQL Server for the concurrency test)
-
-## Roles
-
-- **User** — view rooms and their schedules, book an available slot, view and cancel their own bookings.
-- **Admin** — everything a User can do, plus create/edit/remove rooms and view all bookings across every user.
+## Url: https://purple-glacier-091ed7403.6.azurestaticapps.net
 
 ### Default admin login
 
-Seeded automatically on first run from `appsettings.json` (`Admin:Email` / `Admin:Password`):
+Seeded automatically on first run from configuration (default values for testing).
 
 ```
 email:    admin@test.com
 password: adminadmin
 ```
+
+## Tech stack
+
+- **Backend:** ASP.NET Core (.NET 10), Minimal APIs, CQRS via MediatR, Entity Framework Core, SQL Server
+- **Frontend:** React 19, React Router, Axios, Vite, `@microsoft/signalr`
+- **Real-time:** SignalR + Azure
+- **Tests:** xUnit, Testcontainers (spins up a real, disposable SQL Server for the concurrency test)
+
+## Roles
+
+- **User** — view rooms and their schedules, book an available slot, view and cancel their own bookings.
+- **Admin** — everything a User can do, plus create/edit/remove rooms and view all bookings across every user.
 
 Regular users can self-register from the app's Register page.
 
@@ -46,7 +48,7 @@ dotnet test src/MeetingBookingSystem.Tests
 
 The backend hub is at `/hubs/meeting-rooms`. Clients join a group per room (`JoinGroup(roomId)`), and any booking or cancellation broadcasts a `SlotStatusChanged` event to everyone currently viewing that room's schedule — no page refresh needed.
 
-By default this runs on local, in-process SignalR. To use Azure SignalR Service instead, set a connection string:
+By default this runs on local, in-process SignalR. To use Azure SignalR Service instead, set a connection string in configuration:
 
 ```json
 "ConnectionStrings": {
@@ -87,5 +89,5 @@ Time slots are generated automatically when an admin creates a room: 9:00–18:0
 
 ## Repository / process notes
 
-- Development on this repository was done with active use of Claude Code.
+- Development on this repository was done with active use of Claude Code and GitHub Copilot.
 - Commit history is kept atomic: each commit is one logical change with a description of what and why.
