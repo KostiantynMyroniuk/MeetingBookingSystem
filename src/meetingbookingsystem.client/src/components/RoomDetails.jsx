@@ -70,7 +70,7 @@ export function RoomDetails({ meetingRoomId }) {
     }
 
     if (isLoading) {
-        return <p>Завантаження кімнати...</p>;
+        return null;
     }
 
     if (error) {

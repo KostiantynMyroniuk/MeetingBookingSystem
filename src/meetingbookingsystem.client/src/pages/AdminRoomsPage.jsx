@@ -136,7 +136,7 @@ export default function AdminRoomsPage() {
             )}
 
             {isLoading ? (
-                <p>Завантаження...</p>
+                null
             ) : (
                 <ul className="admin-rooms-list">
                     {rooms.map((room) => (

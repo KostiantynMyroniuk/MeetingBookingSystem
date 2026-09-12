@@ -32,7 +32,7 @@ export function RoomList({ selectedRoomId, onSelectRoom }) {
     }, []);
 
     if (isLoading) {
-        return <p>Завантаження кімнат...</p>;
+        return null;
     }
 
     if (error) {

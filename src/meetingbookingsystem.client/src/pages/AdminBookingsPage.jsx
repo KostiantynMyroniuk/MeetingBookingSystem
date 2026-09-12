@@ -36,7 +36,7 @@ export default function AdminBookingsPage() {
         <div className="App">
             <NavBar />
             <h1>Усі бронювання</h1>
-            {isLoading && <p>Завантаження...</p>}
+            {isLoading && null}
             {error && <p role="alert">{error}</p>}
             {!isLoading && !error && bookings.length === 0 && <p>Бронювань немає</p>}
             {bookings.length > 0 && (

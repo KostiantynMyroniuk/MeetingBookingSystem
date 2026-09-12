@@ -51,7 +51,6 @@ export default function MyBookingsPage() {
         <div className="App">
             <NavBar />
             <h1>Мої бронювання</h1>
-            {isLoading && <p>Завантаження...</p>}
             {error && <p role="alert">{error}</p>}
             {!isLoading && !error && bookings.length === 0 && <p>Бронювань немає</p>}
             {bookings.length > 0 && (

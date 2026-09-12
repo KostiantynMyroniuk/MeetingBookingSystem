@@ -5,7 +5,7 @@ export function RequireAuth({ children }) {
     const { isAuthenticated, isAuthLoading } = useAuth();
 
     if (isAuthLoading) {
-        return <p>Завантаження...</p>;
+        return null;
     }
 
     if (!isAuthenticated) {
@@ -19,7 +19,7 @@ export function RequireAdmin({ children }) {
     const { isAuthenticated, isAdmin, isAuthLoading } = useAuth();
 
     if (isAuthLoading) {
-        return <p>Завантаження...</p>;
+        return null;
     }
 
     if (!isAuthenticated) {
@@ -37,7 +37,7 @@ export function RedirectIfAuthenticated({ children }) {
     const { isAuthenticated, isAuthLoading } = useAuth();
 
     if (isAuthLoading) {
-        return <p>Завантаження...</p>;
+        return null;
     }
 
     if (isAuthenticated) {
