@@ -20,10 +20,10 @@ app.UseCors("BookingFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
+await app.MigrateDatabaseAsync();
+
 if (app.Environment.IsDevelopment())
 {
-    await app.MigrateDatabaseAsync();
-
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -42,7 +42,4 @@ app.MapHub<MeetingRoomHub>("/hubs/meeting-rooms");
 
 app.Run();
 
-public partial class Program
-{
-}
 
