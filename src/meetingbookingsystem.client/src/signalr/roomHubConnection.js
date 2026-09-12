@@ -1,12 +1,14 @@
 import { HubConnectionBuilder, HttpTransportType, LogLevel } from '@microsoft/signalr';
 
+const backendUrl = import.meta.env.VITE_API_BASE_URL;
+
 let connection = null;
 let startPromise = null;
 
 function getConnection() {
     if (!connection) {
         connection = new HubConnectionBuilder()
-            .withUrl('/hubs/meeting-rooms', {
+            .withUrl(`${backendUrl}/hubs/meeting-rooms`, {
                 transport: HttpTransportType.WebSockets,
                 withCredentials: true,
             })

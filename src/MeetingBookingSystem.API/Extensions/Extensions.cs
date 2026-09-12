@@ -100,6 +100,8 @@ public static class Extensions
         {
             options.ExpireTimeSpan = TimeSpan.FromDays(1);
             options.SlidingExpiration = true;
+            options.Cookie.SameSite = SameSiteMode.None;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         });
 
         builder.Services.AddHttpContextAccessor();
